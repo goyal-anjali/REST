@@ -54,3 +54,85 @@ bash terminal> mysql -u "root" -p
 mysql> exit
 
 ```
+
+Introduction to Spring and Spring Boot.
+RESTful WS
+JPA -> MySQL
+Cache, AOP, Validation, testing
+HATEOAS,
+Async, Events, Reactive
+Security, MS
+
+Spring and Spring Boot:
+Dependency Injection --> SOLID Design Principle
+
+Spring --> provides a lightweight container for Dependency Injection [Inversion Of Control container] using which we can build enterprise application
+
+Bean: object instantiated by container and or managed by the container
+
+Manage --> take care of life-cycle / wiring
+
+Traditional:
+```
+Controller
+    Service service = new AdminService();
+
+AdminService
+    Repo repo = MySQLRepo();
+```
+
+IoC Container:
+MySQLRepo object is given to AdminService;
+AdminService object is given to Controller
+
+Simple Application:
+```
+interface BookRepository {
+    void addBook(Book book);
+}
+
+class BookRepositoryDbImpl implements BookRepository {
+     public void addBook(Book book) {
+        // SQL insert into ...
+     }
+}
+
+class BookRepositoryMongoImpl implements BookRepository {
+     public void addBook(Book book) {
+        // db.collections.insert(book)
+     }
+}
+// OCP Principle; Closed for Change, Open for Extension
+class AppService {
+    private BookRepository repo ; // loose coupling
+
+    public void setRepo(BookRepository repo) {
+        this.repo = repo;
+    }
+
+    public void insertBook(Book b) {
+        this.repo.addBook(b);
+    }
+}
+```
+
+XML as Metadata:
+beans.xml
+
+```
+    <beans>
+        <bean id="bookDb" class="pkg.BookRepositoryDbImpl" />
+        <bean id="bookMongo" class="pkg.BookRepositoryMongoImpl" />
+        <bean id="service" class="pkg.AppService">
+            <property name="repo" ref="bookMongo" />
+        </bean>
+    </beans>
+```
+
+property name="bookRepo"  ==> service.setRepo(bookMongo);
+
+// creates a Spring container with metadata present in "beans.xml"
+ApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
+ApplicationContext interface for Spring Container
+
+ctx.getBean("service");
