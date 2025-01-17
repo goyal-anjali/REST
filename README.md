@@ -294,3 +294,8 @@ ConditionalOnMissingBean
 public class BookRepoMongoImpl implements BookRepo{
 
 ```
+https://www.tutorialspoint.com/spring/spring_architecture.htm
+https://www.tutorialspoint.com/spring/spring_ioc_containers.htm
+
+Factory Method and Building RESTful WS with JPA
+
