@@ -121,7 +121,7 @@ beans.xml
 
 ```
     <beans>
-        <bean id="bookDb" class="pkg.BookRepositoryDbImpl" />
+        <bean    class="pkg.BookRepositoryDbImpl" />
         <bean id="bookMongo" class="pkg.BookRepositoryMongoImpl" />
         <bean id="service" class="pkg.AppService">
             <property name="repo" ref="bookMongo" />
@@ -131,8 +131,68 @@ beans.xml
 
 property name="bookRepo"  ==> service.setRepo(bookMongo);
 
+```
 // creates a Spring container with metadata present in "beans.xml"
+main() {
 ApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
 ApplicationContext interface for Spring Container
 
-ctx.getBean("service");
+AppService service = ctx.getBean("service", AppService.class);
+    service.insert(new Book(...))
+}
+```
+
+Annotations as Metadata instead of XML:
+1) Spring has pre-defined annotations when applied at class level will creates instances of the class
+@Component
+@Repository
+@Service
+@Controller
+@RestController
+@Configuration
+@ControllerAdvice
+
+2) Autowired annotation for wiring
+```
+interface BookRepository {
+    void addBook(Book book);
+}
+
+@Repository
+class BookRepositoryDbImpl implements BookRepository {
+     public void addBook(Book book) {
+        // SQL insert into ...
+     }
+}
+
+@Service
+class AppService {
+    @Autowired
+    private BookRepository repo ; // loose coupling
+
+
+    public void insertBook(Book b) {
+        this.repo.addBook(b);
+    }
+}
+```
+@Repository uses sql-error-codes.xml
+
+```
+    try {
+
+
+    } catch(SQLException ex) {
+        if(ex.getErrorCode() == 1062) {
+            throw new DuplicateKeyException(...)
+        }
+    }
+
+```
+
+
+
+
+
+
+
