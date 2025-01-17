@@ -243,7 +243,54 @@ ctx.refresh();
 Object --> demoApplication
 ```
 
+Error:
+Field bookRepo in com.adobe.demo.service.AppService required a single bean, but 2 were found:
+	- bookRepoDbImpl
+	- bookRepoMongoImpl
 
+Solution 1:
+Making one as @Primary
+make one of them as @Primary
 
+Solution 2:
+using @Qualifier
 
+```
+@Service
+public class AppService {
+    @Autowired
+    @Qualifier("bookRepoDbImpl")
+    private BookRepo bookRepo;
+```
 
+Solution 3:
+based on Profile, only beans which are eligible for the profile will be created within the container
+
+```
+@Repository
+@Profile("dev")
+public class BookRepoMongoImpl implements BookRepo{
+
+@Repository
+@Profile("prod")
+public class BookRepoDbImpl implements  BookRepo{
+
+how to choose profile:
+a) application.properties
+spring.profiles.active=dev
+
+b) Command Line Arguments: higher priority compared to application.properties
+More Run/Debug -> Modify Run Confuration
+Active Profiles: prod
+
+```
+
+Solution 4:
+ConditionalOnMissingBean
+```
+@Repository
+//@Profile("dev")
+@ConditionalOnMissingBean( name = "bookRepoDbImpl")
+public class BookRepoMongoImpl implements BookRepo{
+
+```
