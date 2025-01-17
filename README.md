@@ -190,7 +190,58 @@ class AppService {
 
 ```
 
+Interllij --> New Project --> Spring Initilizer --> JDK 17, Java and Maven, setup artifactId and groupId
 
+
+```
+ <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+</dependency>
+```
+
+Spring Boot Framework in built on top of Spring Framework
+Spring Boot 2.x version is built on top of Spring Framework 5.x
+Spring Boot 3.x version is built on top of Spring Framework 6.x
+
+Why Spring Boot?
+* Highly opiniated framework
+* Lots of configurations comes out of the box
+
+Example:
+If we want to use RDBMS, Spring Boot configures Database connection pool
+If we want to build web application, configures Tomcat Web Container,
+If we want ORM application, configures Hibernate out of the box
+It's easier to dockerize the application
+
+
+```
+
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+
+}
+
+SpringApplication.run is similar to
+
+ApplicationContext ctx = new AnnotationConfigApplicationContext();
+ctx.setBasePackage("com.adobe.demo");
+ctx.refresh();
+
+// for example if we have a class with @Service in "com.example" package, it's not scanned
+
+
+@SpringBootApplication is 3 in one:
+1) @ComponentScan("com.adobe.demo")
+2) @EnableAutoConfiguration --> creating built-in objects based on requirement, like database connection pool, Embedded Tomcat Container, ...
+3) @Configuration
+
+Object --> demoApplication
+```
 
 
 
