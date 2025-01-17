@@ -9,7 +9,7 @@ Email: banuprakashc@yahoo.co.in
 
 https://www.linkedin.com/in/banu-prakash-50416019/
 
-https://github.com/BanuPrakash/Spring
+https://github.com/BanuPrakash/REST
 
 ===================================
 
