@@ -513,6 +513,9 @@ public class BookRepoDbImpl implements  BookRepo {
 ```
 
 
+New Application with the following depdencies:
+1) MySQL
+2) Lombok [ reduce boilerplate code]
+3) JPA: Spring Data JPA --> gives Hibernate as ORM an HikariCP for DB Connection pool
 
-
-
+Resume @ 11:20
