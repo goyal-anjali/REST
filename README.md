@@ -518,4 +518,25 @@ New Application with the following depdencies:
 2) Lombok [ reduce boilerplate code]
 3) JPA: Spring Data JPA --> gives Hibernate as ORM an HikariCP for DB Connection pool
 
-Resume @ 11:20
+
+Spring Data JPA creates database connection pool based on entiries present in 
+"application.properites" or "application.yml" file
+
+https://docs.spring.io/spring-boot/appendix/application-properties/index.html
+
+1) spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+ORM should generate SQL compatabile with MySQL
+
+2) spring.jpa.hibernate.ddl-auto=update
+
+update --> map class to existing table, it table doesn't exist create a new one, if required alter the table
+
+create --> drop table on application exit, create a new one for every run of application [ useful only for test env]
+
+validate -> map to existing tables. Don't allow alter or creation. [ Bottom to top approach]
+
+RESTFUL_DB?createDatabaseIfNotExist=true
+
+create database RESTFUL_DB;
+
