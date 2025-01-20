@@ -2,6 +2,7 @@ package com.adobe.orderapp.service;
 
 import com.adobe.orderapp.entity.Product;
 import com.adobe.orderapp.repo.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,15 @@ public class OrderService {
 
     public Product addProduct(Product p) {
         return  productRepository.save(p);
+    }
+
+    public List<Product> byRange(double low, double high) {
+        return  productRepository.getByRange(low, high);
+    }
+
+    @Transactional
+    public Product updateProduct(int id, double price) {
+        productRepository.updateProduct(id, price);
+        return  getProductById(id);
     }
 }

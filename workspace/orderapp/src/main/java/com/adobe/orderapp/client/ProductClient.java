@@ -17,6 +17,23 @@ public class ProductClient implements CommandLineRunner {
     public void run(String... args) throws Exception {
         addProducts();
         listProducts();
+        listByRange();
+
+        updateProduct();
+    }
+
+    private void updateProduct() {
+        Product p = orderService.updateProduct(2, 5200.00);
+        System.out.println("After update");
+        System.out.println(p);
+    }
+
+    private void listByRange() {
+        System.out.println("List by Range...");
+        List<Product> products = orderService.byRange(100, 10000);
+        for(Product p : products) {
+            System.out.println(p);
+        }
     }
 
     private void listProducts() {

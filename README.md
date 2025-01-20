@@ -593,3 +593,14 @@ mysql> select * from products;
 2 rows in set (0.00 sec)
 
 ```
+
+JPARepository CRUD operations for INSERT, DELETE has Transaction enabled.
+When we write custom APIs for INSERT, DELETE or Update we need to explicitly enable Transactions
+
+```
+@Transactional
+public Product updateProduct(int id, double price) {
+        productRepository.updateProduct(id, price);
+        return  getProductById(id);
+}
+```
