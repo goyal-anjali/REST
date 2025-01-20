@@ -556,4 +556,40 @@ intenally a class for this interface is created by Spring Data JPA
 JpaRepository<Product, Integer>
 Product --> which entity to manage
 Integer --> PK is a int type of data
+
+Return type is Optional
+ Optional<T> findById(ID id);
+```
+
+CommandLineRunner
+Interface used to indicate that a bean should run when it is contained within a SpringApplication.
+* Run as soon as the Spring container is created and intialized
+
+```
+
+ % docker exec -it local-mysql bash
+bash-4.4# mysql -u root -p
+Enter password: 
+
+mysql> use RESTFUL_DB
+
+
+Database changed
+mysql> show tables;
++----------------------+
+| Tables_in_RESTFUL_DB |
++----------------------+
+| products             |
++----------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from products;
++----+-----------+---------+----------+
+| id | name      | price   | quantity |
++----+-----------+---------+----------+
+|  1 | iPhone 16 |   98000 |      100 |
+|  2 | Wacom     | 4500.99 |      100 |
++----+-----------+---------+----------+
+2 rows in set (0.00 sec)
+
 ```
