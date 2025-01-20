@@ -604,3 +604,53 @@ public Product updateProduct(int id, double price) {
         return  getProductById(id);
 }
 ```
+
+Building RESTful WS
+
+REST --> REpresentational State Transfer --> Architectural style for distibuted hypermedia systems.
+
+Resource: Any info present on server can be a resource: database, file, image, printer
+
+Representation: State of resource at a given point of time served in various formats like JSON / XML / CSV
+
+Content negotiation: Asking for a suitable presentation by a client
+
+Best Practices:
+1) Use nouns to represent resources
+2) Collection type of resources
+ A collection resource is server-manged directory of resources [ like products]
+ Clients may propose new resources to be added to a collection
+ 3) Store type of resources
+ A Store is client-managed resource repositry.
+ Like Cart
+ Playlist
+ https://spotify/users/banuprakash/playlists
+
+4) Controller --> Actions / executable functions
+Procedural concept
+ https://spotify/users/{id}/playlists/play
+
+5) Use hyphens (-) to improve readability, Avoid underscores
+6) use lowercase in URIs
+7) use query components for filter URI collection
+https://server.com/products?category=mobile
+https://server.com/products?page=1&size=25
+
+8) use Path parameter to get a resource based on ID
+https://server.com/products/4
+ get a product whose id is 4
+
+Resource Representation constits of:
+1) data
+2) metadata describing the data
+3) hypermedia links [level 2 ]
+
+=============
+
+guiding principles of REST
+1) Uniform Interface
+2) client - server: Seperation of concerns, client and server code can evolve seperataly
+3) Stateless: No Conversational state of client. client has to pass his/her info for every request. server doesn't hold any conversational state
+4) Cacheable
+5) Layered System
+
