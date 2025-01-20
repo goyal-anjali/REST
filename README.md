@@ -432,3 +432,87 @@ mysql: image --> application; mysql@8.2.3 or mysql@latest -==> using tags
 local-mysql: name of the container --> running within the docker 
 container runs on port 3306 -> exposed as 3306 to application outside of container
 
+====================
+
+Java Persistence API :JPA
+
+ORM -> Object Relational Mapping
+
+```
+    @Entity
+    @Table(name="books")
+    public class Book {
+        @Id
+        private String isbn;
+
+        @Column(name="title")
+        private String bookTitle;
+
+        @Column(name="amount")
+        private double price;
+    }
+
+```
+
+Once Mapping is done; ORM frameworks helps in DDL and DML operations; simplifies
+
+ public void addProduct(Product product)
+    em.persist(product);
+ }
+
+ ORM Frameworks: Hibernate, TopLink, KODO, JDO, OpenJPA, EclipseLink, ....
+Hibernate --> JBOSS --> RedHat
+TopLink --> Oracle
+KODO --> BEA --> Oracle
+JDO --> Sun MS --> Oracle
+OpenJPA --> Apache
+
+JPA: Specification for ORM 
+
+Below code is not required in Spring Boot, required if we are using Spring Framework
+```
+@Configuration 
+public class AppConfig {
+
+    // factory method; returned object is managed by Spring Container
+    @Bean
+    public DataSource getSource() {
+        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver
+        cpds.setJdbcUrl( "jdbc:postgresql://localhost/testdb" );
+        cpds.setUser("swaldman");
+        cpds.setPassword("test-password");
+
+        // the settings below are optional -- c3p0 can work with defaults
+        cpds.setMinPoolSize(5);
+        cpds.setAcquireIncrement(5);
+        cpds.setMaxPoolSize(20);
+        return cpds; 
+    }
+
+    @Bean
+    public EntityManagerFactory emf(DataSource ds) {
+        LocalContainerEntityManagerFactory emf = new LocalContainerEntityManagerFactory();
+        emf.setDataSource(ds); // which db pool to be used
+        emf.setJpaVendor(new HibernateJpaVendor()); //which ORM to use
+        emf.setPackagesToScan("com.adobe.prj.entity"); // where are my entities?
+        ..
+        return emf;
+    }
+}
+
+@Repository
+public class BookRepoDbImpl implements  BookRepo {
+    @PersistenceContext
+    EntityManager em;
+
+    public void addBook(Book b) {
+        em.persist(b);
+    }
+}
+```
+
+
+
+
+
