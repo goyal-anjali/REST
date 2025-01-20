@@ -299,3 +299,136 @@ https://www.tutorialspoint.com/spring/spring_ioc_containers.htm
 
 Factory Method and Building RESTful WS with JPA
 
+================
+
+Recap day1:
+Dependency Injection, Inversion Of Controller container
+Spring Framework vs Spring Boot
+Metadata --> XML or Annotation
+
+Spring Container can be accessed using ApplicationContext interface
+BeanFactory is also an interface using which we can access Spring Container
+
+BeanFactory:
+1) Bean instantiation
+2) Wiring
+
+ApplicationContext is a super-set of Bean Factory
+1) Bean instantiation
+2) Wiring
+3) AOP
+4) Multiple context [ containers]
+
+Annotations at class-level: @Component, @Repository, @Service, ... [7 annotations]
+@Autowired can be used to wire dependencies [ wiring by type, @Primary, @Qualifier, @Profile, @ConditionalOnMissingBean, @ConditionalOnProperty]
+
+==========
+
+Day 2:
+* Scope of bean
+1) Singleton by default [ only one bean of a class is present inside the container]
+2) Prototype
+@Scope("prototype")
+A seperate bean is wired for each dependency
+
+```
+@Service
+public class AppService {
+    @Autowired
+    private BookRepo bookRepo;
+
+@Service
+public class AdminService {
+    @Autowired
+    private BookRepo bookRepo;
+
+
+
+3) RequestScope: applicable only for web application and not standalone apps
+@RequestScope
+or
+@Scope("request")
+
+one bean per request
+
+@Repository
+@RequestScope
+public class BookRepoDbImpl implements  BookRepo{
+
+4) SessionScope: applicable only for web application and not standalone apps
+@SessionScope
+
+one bean per session
+Session: Conversational state of a client
+
+@Repository
+@SessionScope
+public class BookRepoDbImpl implements  BookRepo{
+
+```
+
+Factory Method 
+The Factory Method pattern suggests that you replace direct object construction calls (using the new operator) with calls to a special factory method. 
+
+* Object creation is complex
+* we need objects of 3rd party classes
+* Spring instantiates classes if it contains above mentioed 7 annotations : @Component, @Repository, @Service, ... [7 annotations]
+
+Maven Central repository — com.mchange:c3p0:0.10.1
+
+we get "ComboPooledDataSource" class to create a database connection pool.
+
+ComboPooledDataSource doesn't contain above mentioed 7 annotations
+DataSource: Pool of database connection
+
+Solution:
+```
+@Configuration 
+public class AppConfig {
+
+    // factory method; returned object is managed by Spring Container
+    @Bean("postgres")
+    public DataSource getSource() {
+        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver
+        cpds.setJdbcUrl( "jdbc:postgresql://localhost/testdb" );
+        cpds.setUser("swaldman");
+        cpds.setPassword("test-password");
+
+        // the settings below are optional -- c3p0 can work with defaults
+        cpds.setMinPoolSize(5);
+        cpds.setAcquireIncrement(5);
+        cpds.setMaxPoolSize(20);
+        return cpds; 
+    }
+
+    @Bean("mysql")
+    public DataSource getSource() {
+        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        cpds.setDriverClass( "com.mysql.Driver" ); //loads the jdbc driver
+        ...
+        return cpds; 
+    }
+}
+
+@Repository
+public class BookRepoDbImpl implements  BookRepo {
+    @Autowired
+    @Qualifier("postgres")
+    DataSource postgresds; // connection pool is wired
+
+     @Autowired
+    @Qualifier("mysql")
+    DataSource mysqlds; // connection pool is wired
+}
+
+```
+
+Docker Desktop
+
+docker run -p 3306:3306 -d --name local-mysql -e MYSQL_ROOT_PASSWORD=Welcome123 mysql
+
+mysql: image --> application; mysql@8.2.3 or mysql@latest -==> using tags
+local-mysql: name of the container --> running within the docker 
+container runs on port 3306 -> exposed as 3306 to application outside of container
+
