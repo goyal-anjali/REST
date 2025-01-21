@@ -804,3 +804,18 @@ JSON PATCH payload is array of operations: add, move, remove, replace
 ]
 ```
 
+Add few customers:
+mysql> insert into customers values ('smitha@adobe.com', 'Smitha', 'Patil');
+
+
+mysql> insert into customers values ('roger@adobe.com', 'Roger', 'Smith');
+
+
+mysql> insert into customers values ('rita@adobe.com', 'Rita', 'Rao');
+
+https://martinfowler.com/bliki/DomainDrivenDesign.html
+
+
+@JoinColumn introduces FOREIGN KEY
+1) FK will be in owning table if used with @ManyToOne and @OneToOne
+2) FK will be in child side / other side with @OneToMany
