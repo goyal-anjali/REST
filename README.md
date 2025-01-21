@@ -654,3 +654,116 @@ guiding principles of REST
 4) Cacheable
 5) Layered System
 
+====================
+
+RESTful , Validation, Exception handling,
+JPA --> add more tables with Relationship
+
+Day 2 Recap: JPA --> ORM --> JDBC --> Database
+Repository --> JpaRepository / MongoRepository
+
+```
+Spring Data JPA generates @Repository class for the interfaces provided
+interface EmployeeRepository extends JpaRepository<Employee, String> {
+    // provides basic methods for CRUD operations
+    // custom methods
+    Projections or @Query [native Query or JP-QL]
+
+    // any custom method we write for INSERT, DELETE and UPDATE needs to be @Transactional
+}
+
+```
+
+Low level JDBC has two methods 
+1) executeQuery(SELECT SQL) --> ResultSet
+2) executeUpdate(INSERT, DELETE, UPDATE SQL) @Modifying -> int
+
+==========
+
+Day 3:
+Building RESTful WS
+
+```
+<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+```
+
+Web Server
+
+
+Including web depenecies gives the application web capabilites to build traditional web application
+or RESTful web application, Simply put it adds Spring MVC Module
+1) Adds Tomcat as Servlet Container / Servlet engine / Web Container
+Servlet engine: to run applications built using Java Technologies on web server
+Servlet are server side java objects
+
+Alternate to Tomcat we have Jetty, Netty, ...
+
+2) Content negotiation handler for JSON is already available by adding Jackson library
+Java <--> JSON 
+
+Alternate to Jackson: Jettison, GSON, Moxy
+
+If we need Java<---> XML explictly libraries has to be added and configured....
+
+3) DispatcherServlet: servlet which works as FrontController, intercepts all requests coming from client
+
+4) HandlerMapping: key/value pair to identify which class and method to invoke based on URL
+
+=======
+
+```
+
+@RestController
+@RequestMapping("api/products")
+public class ProductController {
+    @Autowired
+    private OrderService service;
+
+
+    @GetMapping()
+    public List<Product> getProducts() {
+        return service.getProducts();
+    }
+
+    @PostMapping()
+    public String addProduct(@RequestBody Product p) {
+        return service.addProduct(p);
+    }
+}
+
+
+````
+
+POST http://server/api/products
+Content-type: application/json
+{
+    "name": "A",
+    "price": 630.121,
+    "quantity": 300
+}
+
+
+@RequestBody is required to convert payload into Java Object, because to identify difference between Path paramter and Query Parameter
+
+
+Note: Handler Mapping will scan only classes which have @RestController / @Controller for request mapping
+
+@Controller is for traditional web applications which return Pages/presentation like HTML or PDF
+@RestController is for returning representation of data in various format like JSON / XML / CSV ...
+
+
+CRUD operations and REST 
+
+GET - ReAD
+POST -> CREATE a new record
+PUT / PATCH --> UPDATE a record
+PUT is for major update, almost all the fields based on ID. Send full Object as payload
+PATCH is for partial update, one or two fields, can send using Request Param [ Query]
+DELETE - DELETE --> avoid for collections, can be used for store [user managed]
+
+POSTMAN download to test REST endpoints.
+
+
