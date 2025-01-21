@@ -24,7 +24,7 @@ public class Order {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="order_date")
-    private Date orderDate;
+    private Date orderDate = new Date(); // system date
 
     // order is by a customer
     @ManyToOne
@@ -32,7 +32,7 @@ public class Order {
     private Customer customer;
 
     // order has many line items
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="order_fk")
     private List<LineItem> items = new ArrayList<>();
 

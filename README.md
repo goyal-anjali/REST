@@ -819,3 +819,69 @@ https://martinfowler.com/bliki/DomainDrivenDesign.html
 @JoinColumn introduces FOREIGN KEY
 1) FK will be in owning table if used with @ManyToOne and @OneToOne
 2) FK will be in child side / other side with @OneToMany
+
+=======
+
+Order without Cascade:
+Assume one order has 4 items
+```
+@OneToMany
+@JoinColumn(name="order_fk")
+private List<LineItem> items = new ArrayList<>();
+
+To save we need:
+orderRepo.save(order); 
+itemRepo.save(i1);
+itemRepo.save(i2);
+itemRepo.save(i3);
+itemRepo.save(i4);
+
+To Delete we need:
+orderRepo.delete(order); 
+itemRepo.delete(i1);
+itemRepo.delete(i2);
+itemRepo.delete(i3);
+itemRepo.delete(i4);
+
+```
+
+Order With Cascade:
+Assume one order has 10 items
+```
+@OneToMany(cascade = CascadeType.ALL)
+@JoinColumn(name="order_fk")
+private List<LineItem> items = new ArrayList<>();
+
+To save we need:
+orderRepo.save(order);  // takes care of saving all items of order
+To Delete we need:
+orderRepo.delete(order); // takes care of deleting all items of order
+
+```
+
+EAGER and LAZY Loading of children.
+```
+1) By default One to many is LAZY loading; many To one is EAGER Fetching
+@OneToMany(cascade = CascadeType.ALL)
+@JoinColumn(name="order_fk")
+private List<LineItem> items = new ArrayList<>();
+
+orderRepo.findAll(); // select * from orders; items are not fetched
+
+2) EAGER Fetching
+ @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name="order_fk")
+    private List<LineItem> items = new ArrayList<>();
+
+   orderRepo.findAll(); // select * from orders;  also items of orders are also fetched 
+```
+
+Genarated SQL:
+
+```
+ create table line_items (item_id integer not null auto_increment, amount float(53) not null, qty integer not null, product_fk integer, order_fk integer, primary key (item_id)) engine=InnoDB
+create table orders (oid integer not null auto_increment, order_date datetime(6), total float(53) not null, customer_fk varchar(255), primary key (oid)) engine=InnoDB
+alter table line_items add constraint FK7bcmyaf081a54pqagiuo2boo foreign key (product_fk) references products (id)
+alter table line_items add constraint FKjvi2gypwgl46v67xa2bgqp0uj foreign key (order_fk) references orders (oid)
+ alter table orders add constraint FKlctjwy900y7l1xmwulg4rkeb3 foreign key (customer_fk) references customers (email)
+```
