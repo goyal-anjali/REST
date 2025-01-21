@@ -9,6 +9,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
+
+    List<Product> findAllByIdIn(List<Integer> ids);
+
     // select * from products where quantity = ?
     List<Product> findByQuantity(int quantity); // Projections
     // select * from products where price between ? and ?

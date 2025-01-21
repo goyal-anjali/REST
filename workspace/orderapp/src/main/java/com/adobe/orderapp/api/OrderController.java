@@ -17,6 +17,7 @@ public class OrderController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED) // 201
     public String createOrder(@RequestBody Order order){
+        // securityContext.getPrinciple().getUsername()
         return service.placeOrder(order);
     }
 

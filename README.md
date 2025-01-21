@@ -885,3 +885,48 @@ alter table line_items add constraint FK7bcmyaf081a54pqagiuo2boo foreign key (pr
 alter table line_items add constraint FKjvi2gypwgl46v67xa2bgqp0uj foreign key (order_fk) references orders (oid)
  alter table orders add constraint FKlctjwy900y7l1xmwulg4rkeb3 foreign key (customer_fk) references customers (email)
 ```
+
+Validation of User input, Exception Handling
+
+AOP: Aspect Oriented Programming
+AOP is to eliminate Code tangling and Code scattering in application
+Cross Cutting Concerns: aspect of code like logging, security, transaction, ... leads to code scatterning and code tangling
+
+```
+public void transferFunds(Account fromAcc, Account toAcc, double amt) {
+    log.debug("begin Transaction");
+    try {
+    if(role.isAdmin()) {
+        transaction.begin();
+            // withdraw from fromACC
+            log.debug("amount withdraw..");
+            // deposit into toAcc
+        transaction.commit();
+     log.debug("Complete Transaction");
+    }
+    } catch(SQLException ex) {
+        transaction.rollback();
+         log.debug("Error in Transaction");
+    }
+}
+```
+
+Aspect: bit of code which generally leads to code tangling and scattering like logging, security, transaction
+JoinPoint: place in your code where aspect can be weaved
+In Spring methods and exceptions are eligible as JoinPoint
+PointCut: selected JoinPoint
+Advice: how aspect can be weaved like before, after, around, afterThrowing , afterReturning
+
+
+public class LogAspect {
+
+    @Before("execution(* com.adobe.orderapp.service.OrderService.addProduct(..))")
+    public void logAspect(JoinPoint jp) {
+        // code
+    }
+}
+
+Day 4:
+AOP, Validation of User input, Exception Handling, Unit Testing, Caching, HATEOAS
+
+
