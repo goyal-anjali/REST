@@ -18,6 +18,6 @@ public class Employee {
     int id;
     String title;
     List<String> skills = new ArrayList<>();
-    Map<String, String> communication = new LinkedHashMap<>();
+    Map<String, String> personal = new LinkedHashMap<>();
 }
 

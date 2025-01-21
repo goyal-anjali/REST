@@ -766,4 +766,41 @@ DELETE - DELETE --> avoid for collections, can be used for store [user managed]
 
 POSTMAN download to test REST endpoints.
 
+===========================
+
+JSON PATCH
+
+```
+Complex nested data
+
+public class Employee {
+    int id;
+    String title;
+    List<String> skills = new ArrayList<>();
+    Map<String, String> communication = new LinkedHashMap<>();
+}
+
+updating this Employee is too complex
+May need to add skills, remove a skill, add skill in between
+
+skills ==> [JAVA, AWS] ==> [JAVA, SPRING BOOT, AWS] 
+
+communication
+mobile: ...
+email: ....
+
+
+{
+    "message": "Hello World",
+    "from": "Unknown"
+}
+
+JSON PATCH payload is array of operations: add, move, remove, replace
+
+[
+    { "op": "replace", "path": "/message", "value": "Patching JSON is fun" },
+    { "op": "add", "path": "/with", "value": "jsonpatch.me" },
+    { "op": "remove", "path": "/from" }
+]
+```
 
