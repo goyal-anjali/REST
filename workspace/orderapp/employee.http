@@ -1,0 +1,10 @@
+### @name="Update Employee with JSON PATCH"
+PATCH http://localhost:8080/api/employees/123
+Content-Type:application/json-patch+json
+
+[
+    {"op": "replace" , "path" : "/title", "value" : "Team Lead"},
+    {"op": "remove", "path": "/personal/mobile"},
+    {"op": "add", "path": "/personal/email", "value": "smitha@adobe.com"},
+    {"op" : "add", "path" : "/skills/1", "value": "Spring Boot" }
+  ]

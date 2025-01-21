@@ -1,6 +1,7 @@
 package com.adobe.orderapp.api;
 
 import com.adobe.orderapp.dto.Employee;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,11 @@ public class EmployeeController {
 
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
     public Employee updateEmployee(@PathVariable("id") int id, @RequestBody JsonPatch patch) throws Exception{
-        return null;
+        ObjectMapper mapper = new ObjectMapper();
+        //mapper.writeValueAsString(employee) Employee to JSON
+        // patch.apply --> apply changes to the JSON and create a JSON Node
+        var target = patch.apply(mapper.readTree(mapper.writeValueAsString(employee)));
+        // convert JsonNode back to Employee JSON
+        return mapper.treeToValue(target, Employee.class);
     }
 }
