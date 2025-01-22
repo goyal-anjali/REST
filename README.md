@@ -306,8 +306,8 @@ Dependency Injection, Inversion Of Controller container
 Spring Framework vs Spring Boot
 Metadata --> XML or Annotation
 
-Spring Container can be accessed using ApplicationContext interface
-BeanFactory is also an interface using which we can access Spring Container
+pom.xml - project metadata info and list dependencies
+Spring Container can be accessed using ApplicationContext interface or BeanFactory interface
 
 BeanFactory:
 1) Bean instantiation
@@ -367,6 +367,11 @@ public class BookRepoDbImpl implements  BookRepo{
 
 ```
 
+Difference between the scopes
+Prototype - per wiring ()
+Request Scope - per request ()
+Session scope - per session (example - payment gateway)
+
 Factory Method 
 The Factory Method pattern suggests that you replace direct object construction calls (using the new operator) with calls to a special factory method. 
 
@@ -380,6 +385,8 @@ we get "ComboPooledDataSource" class to create a database connection pool.
 
 ComboPooledDataSource doesn't contain above mentioed 7 annotations
 DataSource: Pool of database connection
+
+Within configuration class if we put @Bean on a method, spring will invoke the method automatically and manages the returned object
 
 Solution:
 ```
@@ -454,13 +461,20 @@ ORM -> Object Relational Mapping
 
 ```
 
+@Column is optional - it will automatically take the memeber name as column name
+@Table is optional - class name is default table name
+@Id is compulsory since it is the primary key for the table
+
 Once Mapping is done; ORM frameworks helps in DDL and DML operations; simplifies
 
+```
  public void addProduct(Product product)
     em.persist(product);
  }
+```
 
- ORM Frameworks: Hibernate, TopLink, KODO, JDO, OpenJPA, EclipseLink, ....
+ORM takes care of establishing database connection, setting up of inpur params, executing, etc.
+ORM Frameworks: Hibernate, TopLink, KODO, JDO, OpenJPA, EclipseLink, ....
 Hibernate --> JBOSS --> RedHat
 TopLink --> Oracle
 KODO --> BEA --> Oracle
@@ -468,6 +482,10 @@ JDO --> Sun MS --> Oracle
 OpenJPA --> Apache
 
 JPA: Specification for ORM 
+
+PersistenceContext - entities are managed (@Entity marked classes)
+EntityManager managed PersistenceContext
+EntityManagerFactory is used to create EntityManager
 
 Below code is not required in Spring Boot, required if we are using Spring Framework
 ```
@@ -516,7 +534,7 @@ public class BookRepoDbImpl implements  BookRepo {
 New Application with the following depdencies:
 1) MySQL
 2) Lombok [ reduce boilerplate code]
-3) JPA: Spring Data JPA --> gives Hibernate as ORM an HikariCP for DB Connection pool
+3) JPA: Spring Data JPA --> gives Hibernate as ORM and HikariCP for DB Connection pool
 
 
 Spring Data JPA creates database connection pool based on entiries present in 
